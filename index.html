@@ -60,13 +60,14 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 .wrap{max-width:1000px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
 /* header */
-.top{display:flex;align-items:center;justify-content:space-between;gap:8px 14px;padding-block:14px 12px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:14px}
-.top h1{margin:0;font-size:26px;font-weight:900;letter-spacing:.06em;line-height:1}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:14px 12px}
+.brand{display:flex;flex-direction:column;gap:5px;min-width:0}
+.ctrls{display:flex;align-items:center;gap:8px;flex:none}
+.top h1{margin:0;font-size:26px;font-weight:900;letter-spacing:.04em;line-height:1}
 .status{font-size:12.5px;color:var(--muted)}
 .status.bad{color:var(--orange)}
-.seg{display:flex;padding:4px;border-radius:14px;background:linear-gradient(180deg,var(--seg1),var(--seg2));border:1px solid rgb(255 255 255 / .06);box-shadow:0 2px 6px -2px rgb(20 24 36 / .35),inset 0 1px 0 rgb(255 255 255 / .08);flex:none}
-.seg a{padding:8px 20px;border-radius:10px;text-decoration:none;color:rgb(255 255 255 / .6);font-weight:600;font-size:14.5px;white-space:nowrap}
+.seg{display:flex;padding:3px;border-radius:12px;background:linear-gradient(180deg,var(--seg1),var(--seg2));border:1px solid rgb(255 255 255 / .06);box-shadow:0 2px 6px -2px rgb(20 24 36 / .35),inset 0 1px 0 rgb(255 255 255 / .08);flex:none}
+.seg a{padding:6px 15px;border-radius:9px;text-decoration:none;color:rgb(255 255 255 / .6);font-weight:600;font-size:13.5px;white-space:nowrap}
 .seg a:hover{color:#fff}
 .seg a[aria-current="page"]{background:linear-gradient(180deg,#1aaaa3,#0b7d78);color:#fff;box-shadow:inset 0 1px 0 rgb(255 255 255 / .28),0 1px 3px rgb(11 125 120 / .5)}
 
@@ -96,12 +97,12 @@ main{padding-block:0 12px;display:grid;gap:10px}
 .iconbtn:hover{color:var(--ink)}
 .iconbtn svg{width:18px;height:18px}
 /* sync button */
-.syncbtn{position:relative;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:none;
+.syncbtn{position:relative;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#fff;flex:none;
   background:linear-gradient(180deg,var(--seg1),var(--seg2));border:1px solid rgb(255 255 255 / .06);
   box-shadow:0 2px 6px -2px rgb(20 24 36 / .35),inset 0 1px 0 rgb(255 255 255 / .08)}
 .syncbtn:hover{color:#7fe3dd}
-.syncbtn .ic{width:23px;height:23px}
-.syncbtn .sdot{position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;background:#8a90a0;box-shadow:0 0 0 2px var(--seg1)}
+.syncbtn .ic{width:20px;height:20px}
+.syncbtn .sdot{position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:#8a90a0;box-shadow:0 0 0 2px var(--seg1)}
 .syncbtn[data-state="ok"] .sdot{background:#3fd37f}
 .syncbtn[data-state="syncing"] .sdot{background:#ffb257}
 .syncbtn[data-state="err"] .sdot{background:#ff6a55}
@@ -237,6 +238,18 @@ tr.done .tg,tr.done .who{filter:grayscale(1);opacity:.7}
 .chk[aria-checked="true"] .dot{background:var(--green);border-color:var(--green);color:#fff}
 .chk[aria-checked="true"] svg{display:block}
 .chk:disabled{cursor:default}
+.wn{display:none}
+tr.grp{cursor:default}
+tbody tr.grp:hover td{background:transparent}
+.gname{display:inline-flex;align-items:center;gap:6px}
+.caret{display:inline-block;color:var(--muted);font-size:17px;line-height:1;transition:transform .2s}
+tr.grp.open .caret{transform:rotate(90deg)}
+tr.grp.open td{border-bottom:0}
+tbody tr.item td{border-top:1px dashed var(--line);padding-block:7px;font-size:13.5px;background:var(--card2)}
+tr.item td:first-child{padding-left:30px;position:relative}
+tr.item td:first-child::before{content:"";position:absolute;left:20px;top:0;bottom:50%;width:6px;border-left:1.5px solid var(--faint);border-bottom:1.5px solid var(--faint);border-bottom-left-radius:4px}
+tr.item .amt{font-weight:500}
+tbody tr.item:hover td{background:var(--line)}
 .paidoff{font-size:12px;font-weight:600;padding:3px 8px;border-radius:6px;background:var(--green-soft);color:var(--green)}
 
 .tip{display:flex;align-items:flex-start;gap:6px;margin:0 4px;font-size:12px;color:var(--muted)}
@@ -279,20 +292,25 @@ tr.done .tg,tr.done .who{filter:grayscale(1);opacity:.7}
   .who{font-size:13.5px;padding:4px 10px 4px 8px}
   .chk{padding:4px}
   .chk .lb{display:none}
-  .top h1{font-size:23px}
-  .meta{width:100%;justify-content:space-between}
-  .seg a{padding:7px 15px}
+  .top h1{font-size:24px}
+  .status{font-size:11.5px}
+  .seg a{padding:6px 12px}
   .scrim{align-items:flex-end;padding:0}
   .sheet{width:100%;border-radius:24px 24px 0 0;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}
 }
 @media (max-width:420px){
+  .dsum{padding:18px 16px}
+  .dsum-top{gap:14px}
+  .dsum .v{font-size:19px}
+  .dt .ww > .amt:not(.wn){display:none}
+  .dt .wn{display:inline}
   .amt .dec0{display:none}
   .fields{grid-template-columns:1fr}
   .add .lb{display:none}
 }
 /* home-screen app: keep the header clear of the system's blurred status-bar zone */
 @media (display-mode: standalone){
-  .top{padding-top:34px;padding-bottom:16px}
+  .top{padding-top:22px}
 }
 @media (prefers-reduced-motion:no-preference){
   .scrim .sheet{animation:up .22s ease-out}
@@ -305,6 +323,9 @@ tr.done .tg,tr.done .who{filter:grayscale(1);opacity:.7}
 <header class="wrap top">
   <div class="brand">
     <h1>Pay</h1>
+    <div class="status" id="status">正在读取…</div>
+  </div>
+  <div class="ctrls">
     <button class="syncbtn" id="sync-btn" type="button" aria-label="备份与同步" title="备份与同步" data-state="off">
       <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.2a4.3 4.3 0 0 0 .6-8.56A6 6 0 0 0 6.3 9.6 4.5 4.5 0 0 0 7 18.5Z"/><path class="arr" d="M9.6 13.6 12 11.2l2.4 2.4M12 11.4v4.6"/></svg>
       <i class="sdot" aria-hidden="true"></i>
@@ -314,7 +335,6 @@ tr.done .tg,tr.done .who{filter:grayscale(1);opacity:.7}
       <a href="#personal" id="tab-personal">个人</a>
     </nav>
   </div>
-  <div class="meta"><div class="status" id="status">正在读取…</div></div>
 </header>
 
 <main class="wrap" id="page-loans">
@@ -355,6 +375,9 @@ function loanColor(name){
   for(const [k,c] of [["公积金","green"],["房","blue"],["车","teal"],["信用卡","orange"],["分期","orange"],["经营","purple"],["消费","yellow"],["装修","purple"]]) if(n.includes(k)) return c;
   return hashC(n);
 }
+const wan = n => { const v = (Number(n)||0)/10000; return (Math.round(v*100)/100).toLocaleString("zh-CN",{maximumFractionDigits:2}) + "万"; };
+const yenW = (n, cls="") => (Number(n)||0) >= 10000 ? `<span class="ww">${yen(n,cls)}<span class="amt wn ${cls}">¥${wan(n)}</span></span>` : yen(n,cls);
+let closedGroups = new Set();
 const xs = c => `--x:var(--${c});--x-soft:var(--${c}-soft)`;
 const CHECK = `<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.3 5 8.6 9.6 3.6"/></svg>`;
 const I_BOLT = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 2 4 13.5h6.5L9.5 22 20 9.5h-6.6L13.5 2Z"/></svg>`;
@@ -374,7 +397,7 @@ function route(){
 addEventListener("hashchange", route); route();
 
 const KEY = "pay-ledger-v1";
-function setStatus(t, bad){ const el = $("#status"); el.textContent = `${Y}年${M+1}月${D}日 · ${t}`; el.classList.toggle("bad", !!bad); }
+function setStatus(t, bad){ const el = $("#status"); el.textContent = `${M+1}月${D}日 · ${t}`; el.classList.toggle("bad", !!bad); }
 function saveLocal(){
   try { localStorage.setItem(KEY, JSON.stringify(data)); return true; }
   catch(e){ setStatus("保存失败：浏览器不允许本地存储", true); return false; }
@@ -463,20 +486,45 @@ function render(){
     <div class="dsum-foot"><span>已还 ${dPct}%</span><span>还剩 ${100-dPct}%</span></div>`;
 
   const dbg = $("#debt-badge"); dbg.hidden = !debts.length;
-  dbg.textContent = owing.length?`${owing.length} 笔未还清`:"全部还清"; dbg.className = "badge"+(owing.length?"":" ok");
-  $("#tb-debts").innerHTML = debts.length ? `<table>
+  dbg.className = "badge"+(owing.length?"":" ok");
+  // group entries that share the same creditor name
+  const groups = [], gmap = new Map();
+  for(const d of debts){ const k = String(d.person||"").trim() || "未填写"; if(!gmap.has(k)){ const g = {name:k, items:[]}; gmap.set(k,g); groups.push(g); } gmap.get(k).items.push(d); }
+  for(const g of groups){
+    g.items.sort((a,b)=>(a.date||"9").localeCompare(b.date||"9"));
+    g.amt = g.items.reduce((s,d)=>s+(+d.amount||0),0);
+    g.rep = g.items.reduce((s,d)=>s+Math.min(+d.repaid||0,+d.amount||0),0);
+    g.left = g.amt - g.rep;
+  }
+  groups.sort((a,b)=> (a.left<=0)!==(b.left<=0) ? (a.left<=0?1:-1) : b.left-a.left);
+  const owePeople = groups.filter(g=>g.left>0).length;
+  dbg.textContent = owing.length ? `${owePeople} 人 · ${owing.length} 笔未还` : "全部还清";
+  const leftCell = v => v>0 ? yenW(v,"red") : `<span class="paidoff">已还清</span>`;
+  $("#tb-debts").innerHTML = debts.length ? `<table class="dt">
     <thead><tr><th>债权人</th><th class="dk">借款时间</th><th class="r">金额</th><th class="r">已还</th><th class="r">未还</th></tr></thead>
-    <tbody>${debts.map(d=>{
-      const amt = +d.amount||0, rep = Math.min(+d.repaid||0, amt), left = amt-rep;
-      return `<tr data-edit="debts:${d.id}" class="${left<=0?"done":""}">
-        <td><span class="who" style="${xs(hashC(d.person))}"><i class="dot"></i><span>${esc(d.person)}</span></span><div class="sub mo">${esc(d.date||"—")}</div></td>
-        <td class="dk"><span class="day">${esc(d.date||"—")}</span></td>
-        <td class="r">${yen(amt)}</td>
-        <td class="r">${yen(rep, rep?"green":"dim")}</td>
-        <td class="r">${left>0?yen(left,"red"):`<span class="paidoff">已还清</span>`}</td>
-      </tr>`;
+    <tbody>${groups.map(g=>{
+      const c = hashC(g.name), chip = `<span class="who" style="${xs(c)}"><i class="dot"></i><span>${esc(g.name)}</span></span>`;
+      if(g.items.length===1){
+        const d = g.items[0];
+        return `<tr data-edit="debts:${d.id}" class="${g.left<=0?"done":""}">
+          <td>${chip}<div class="sub mo">${esc(d.date||"—")}</div></td>
+          <td class="dk"><span class="day">${esc(d.date||"—")}</span></td>
+          <td class="r">${yenW(g.amt)}</td><td class="r">${yenW(g.rep, g.rep?"green":"dim")}</td><td class="r">${leftCell(g.left)}</td></tr>`;
+      }
+      const open = true;
+      return `<tr class="grp open ${g.left<=0?"done":""}">
+          <td><span class="gname">${chip}</span><div class="sub">${g.items.length} 笔借款</div></td>
+          <td class="dk"><span class="sub">${esc(g.items[0].date||"—")} 起</span></td>
+          <td class="r">${yenW(g.amt)}</td><td class="r">${yenW(g.rep, g.rep?"green":"dim")}</td><td class="r">${leftCell(g.left)}</td></tr>`
+        + (open ? g.items.map(d=>{
+          const amt = +d.amount||0, rep = Math.min(+d.repaid||0, amt), left = amt-rep;
+          return `<tr class="item ${left<=0?"done":""}" data-edit="debts:${d.id}">
+            <td><span class="day">${esc(d.date||"未填日期")}</span></td>
+            <td class="dk"></td>
+            <td class="r">${yenW(amt)}</td><td class="r">${yenW(rep, rep?"green":"dim")}</td><td class="r">${left>0?yenW(left,"red"):`<span class="paidoff">已还清</span>`}</td></tr>`;
+        }).join("") : "");
     }).join("")}</tbody>
-    <tfoot><tr><td class="lbl">合计<small>${debts.length} 笔</small></td><td class="dk"></td><td class="r">${yen(dSum)}</td><td class="r">${yen(dRep,"green")}</td><td class="r">${yen(dLeft,"red")}</td></tr></tfoot>
+    <tfoot><tr><td class="lbl">合计<small>${groups.length} 人 · ${debts.length} 笔</small></td><td class="dk"></td><td class="r">${yenW(dSum)}</td><td class="r">${yenW(dRep,"green")}</td><td class="r">${yenW(dLeft,"red")}</td></tr></tfoot>
     </table>`
   : empty("还没有借款记录","记下债权人、金额和借款时间，之后随时更新已还金额。","debts");
 
@@ -555,7 +603,8 @@ function loadSample(){
 }
 
 document.addEventListener("click", e=>{
-  const t = e.target.closest("[data-paid],[data-add],[data-sample],[data-edit],[data-sort],[data-mv]"); if(!t) return;
+  const t = e.target.closest("[data-paid],[data-add],[data-sample],[data-edit],[data-sort],[data-mv],[data-grp]"); if(!t) return;
+  if(t.dataset.grp !== undefined){ const k = t.dataset.grp; if(closedGroups.has(k)) closedGroups.delete(k); else closedGroups.add(k); render(); return; }
   if(t.dataset.sort){ sortMode = !sortMode; render(); $("#sort-btn")?.focus(); return; }
   if(t.dataset.mv){ const [dir,id] = t.dataset.mv.split(":"); const i = data.loans.findIndex(x=>x.id===id), j = i + Number(dir);
     if(i<0 || j<0 || j>=data.loans.length) return; [data.loans[i], data.loans[j]] = [data.loans[j], data.loans[i]]; commit();
