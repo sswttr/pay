@@ -54,7 +54,7 @@ body{margin:0}
 [hidden]{display:none!important}
 html{background:var(--bg)}
 body{color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;
-  background:radial-gradient(900px 380px at 12% -80px,var(--glow),transparent 70%),radial-gradient(800px 360px at 95% -60px,var(--glow2),transparent 70%),var(--bg)}
+  background:var(--bg)}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .wrap{max-width:1000px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -65,10 +65,10 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 .top h1{margin:0;font-size:26px;font-weight:900;letter-spacing:.06em;line-height:1}
 .status{font-size:12.5px;color:var(--muted)}
 .status.bad{color:var(--orange)}
-.seg{display:flex;padding:4px;border-radius:14px;background:linear-gradient(180deg,var(--seg1),var(--seg2));border:1px solid rgb(255 255 255 / .06);box-shadow:0 10px 22px -12px rgb(20 24 36 / .7),inset 0 1px 0 rgb(255 255 255 / .08);flex:none}
+.seg{display:flex;padding:4px;border-radius:14px;background:linear-gradient(180deg,var(--seg1),var(--seg2));border:1px solid rgb(255 255 255 / .06);box-shadow:0 2px 6px -2px rgb(20 24 36 / .35),inset 0 1px 0 rgb(255 255 255 / .08);flex:none}
 .seg a{padding:8px 20px;border-radius:10px;text-decoration:none;color:rgb(255 255 255 / .6);font-weight:600;font-size:14.5px;white-space:nowrap}
 .seg a:hover{color:#fff}
-.seg a[aria-current="page"]{background:linear-gradient(180deg,#1aaaa3,#0b7d78);color:#fff;box-shadow:inset 0 1px 0 rgb(255 255 255 / .28),0 4px 12px -4px rgb(11 125 120 / .8)}
+.seg a[aria-current="page"]{background:linear-gradient(180deg,#1aaaa3,#0b7d78);color:#fff;box-shadow:inset 0 1px 0 rgb(255 255 255 / .28),0 1px 3px rgb(11 125 120 / .5)}
 
 main{padding-block:0 12px;display:grid;gap:10px}
 
@@ -98,7 +98,7 @@ main{padding-block:0 12px;display:grid;gap:10px}
 /* sync button */
 .syncbtn{position:relative;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:none;
   background:linear-gradient(180deg,var(--seg1),var(--seg2));border:1px solid rgb(255 255 255 / .06);
-  box-shadow:0 10px 22px -12px rgb(20 24 36 / .7),inset 0 1px 0 rgb(255 255 255 / .08)}
+  box-shadow:0 2px 6px -2px rgb(20 24 36 / .35),inset 0 1px 0 rgb(255 255 255 / .08)}
 .syncbtn:hover{color:#7fe3dd}
 .syncbtn .ic{width:23px;height:23px}
 .syncbtn .sdot{position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;background:#8a90a0;box-shadow:0 0 0 2px var(--seg1)}
@@ -194,6 +194,7 @@ tbody tr.sorting{cursor:default}
 .add svg{width:14px;height:14px}
 .add:hover{background:var(--accent);color:var(--on-accent)}
 .add+.add{margin-left:0}
+.add[hidden]+.add{margin-left:auto}
 .add.on{background:var(--accent);color:var(--on-accent)}
 
 table{width:100%;border-collapse:collapse}

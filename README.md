@@ -33,6 +33,5 @@
 | `manifest.webmanifest` | 主屏幕应用的名称、图标、颜色 |
 | `sw.js` | 离线缓存，没网也能打开 |
 | `` | 主屏幕和浏览器标签图标 |
-| `.nojekyll` | 让 GitHub Pages 原样发布文件 |
 
 修改 `index.html` 后，把 `sw.js` 第一行附近的 `pay-v1` 改成 `pay-v2`，手机上就会更新到新版本。
