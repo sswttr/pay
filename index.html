@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>还款</title>
+<title>Pay</title>
 <meta name="description" content="记录每月贷款还款和个人借款的小账本">
 <meta name="theme-color" content="#f4f4f6" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#15171c" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="还款">
+<meta name="apple-mobile-web-app-title" content="Pay">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -92,9 +92,44 @@ main{padding-block:0 12px;display:grid;gap:10px}
 .ins h3{margin:0 0 6px;font-size:14.5px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
 .ins h3 small{font-weight:500;color:var(--muted);font-size:12px}
 .meta{display:flex;align-items:center;gap:10px}
-.iconbtn{width:34px;height:34px;border-radius:10px;background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow);display:grid;place-items:center;color:var(--muted);flex:none}
+.iconbtn-unused{width:34px;height:34px;border-radius:10px;background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow);display:grid;place-items:center;color:var(--muted);flex:none}
 .iconbtn:hover{color:var(--ink)}
 .iconbtn svg{width:18px;height:18px}
+/* sync button */
+.syncbtn{position:relative;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:none;
+  background:linear-gradient(180deg,var(--seg1),var(--seg2));border:1px solid rgb(255 255 255 / .06);
+  box-shadow:0 10px 22px -12px rgb(20 24 36 / .7),inset 0 1px 0 rgb(255 255 255 / .08)}
+.syncbtn:hover{color:#7fe3dd}
+.syncbtn .ic{width:23px;height:23px}
+.syncbtn .sdot{position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;background:#8a90a0;box-shadow:0 0 0 2px var(--seg1)}
+.syncbtn[data-state="ok"] .sdot{background:#3fd37f}
+.syncbtn[data-state="syncing"] .sdot{background:#ffb257}
+.syncbtn[data-state="err"] .sdot{background:#ff6a55}
+.syncbtn[data-state="syncing"] .arr{animation:lift 1s ease-in-out infinite}
+@keyframes lift{0%,100%{transform:translateY(1px);opacity:.6}50%{transform:translateY(-1.5px);opacity:1}}
+/* sync sheet */
+.sync-hero{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:16px}
+.sync-hero .orb{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;color:#fff;background:linear-gradient(160deg,#1aaaa3,#0b6f6b);box-shadow:0 12px 24px -12px rgb(11 125 120 / .9),inset 0 1px 0 rgb(255 255 255 / .3)}
+.sync-hero .orb svg{width:30px;height:30px}
+.sync-hero h3{margin:4px 0 0}
+.sbox{border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:10px;background:var(--card)}
+.sbox+.sbox{margin-top:12px}
+.sbox .hd{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:700;font-size:14.5px}
+.sbox .hd small{font-weight:500;font-size:12px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:7px;background:var(--card2);color:var(--muted);white-space:nowrap}
+.pill i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.pill.ok{background:var(--green-soft);color:var(--green)} .pill.syncing{background:var(--today-soft);color:var(--today)} .pill.err{background:var(--owe-soft);color:var(--owe)}
+.sbox p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.65}
+.sbox ol{margin:0;padding-left:18px;font-size:12.5px;color:var(--muted);line-height:1.8}
+.sbox a{color:var(--accent-ink);font-weight:600}
+.sbox input{font:inherit;font-size:15px;color:var(--ink);background:var(--card2);border:1.5px solid transparent;border-radius:12px;padding:10px 12px;width:100%;min-width:0}
+.sbox input:focus{outline:none;border-color:var(--accent)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn.teal{background:linear-gradient(180deg,#1aaaa3,#0b7d78);color:#fff}
+.btn.sm{padding:8px 12px;font-size:13.5px}
+.choice{display:grid;gap:8px;padding:12px;border-radius:12px;background:var(--today-soft)}
+.choice p{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.syncbtn[data-state="syncing"] .arr{animation:none}}
 /* month stats */
 .stat{padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .stat .st{border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;justify-content:center}
@@ -264,13 +299,17 @@ tr.done .tg,tr.done .who{filter:grayscale(1);opacity:.7}
 
 <header class="wrap top">
   <div class="brand">
-    <h1>还款</h1>
+    <h1>Pay</h1>
+    <button class="syncbtn" id="sync-btn" type="button" aria-label="备份与同步" title="备份与同步" data-state="off">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.2a4.3 4.3 0 0 0 .6-8.56A6 6 0 0 0 6.3 9.6 4.5 4.5 0 0 0 7 18.5Z"/><path class="arr" d="M9.6 13.6 12 11.2l2.4 2.4M12 11.4v4.6"/></svg>
+      <i class="sdot" aria-hidden="true"></i>
+    </button>
     <nav class="seg" aria-label="页面">
       <a href="#loans" id="tab-loans">贷款</a>
       <a href="#personal" id="tab-personal">个人</a>
     </nav>
   </div>
-  <div class="meta"><div class="status" id="status">正在读取…</div><button class="iconbtn" id="backup-btn" type="button" aria-label="备份与恢复" title="备份与恢复"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v9M6.5 8.5 10 12l3.5-3.5"/><path d="M3.5 13.5v1.5a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-1.5"/></svg></button></div>
+  <div class="meta"><div class="status" id="status">正在读取…</div></div>
 </header>
 
 <main class="wrap" id="page-loans">
@@ -331,11 +370,12 @@ addEventListener("hashchange", route); route();
 
 const KEY = "pay-ledger-v1";
 function setStatus(t, bad){ const el = $("#status"); el.textContent = `${Y}年${M+1}月${D}日 · ${t}`; el.classList.toggle("bad", !!bad); }
-function save(){
-  try { localStorage.setItem(KEY, JSON.stringify(data)); setStatus("已保存在本机"); }
-  catch(e){ setStatus("保存失败：浏览器不允许本地存储", true); }
+function saveLocal(){
+  try { localStorage.setItem(KEY, JSON.stringify(data)); return true; }
+  catch(e){ setStatus("保存失败：浏览器不允许本地存储", true); return false; }
 }
-function commit(){ render(); save(); }
+function save(){ if(saveLocal()) setStatus(sync.token ? "已保存，正在同步…" : "已保存在本机"); }
+function commit(){ data.updatedAt = Date.now(); render(); save(); scheduleSync(); }
 
 function empty(title, hint, type){
   const all = !data.loans.length && !data.debts.length;
@@ -525,34 +565,130 @@ document.addEventListener("click", e=>{
 document.addEventListener("keydown", e=>{ if(e.key==="Escape" && $("#dlg-root").innerHTML) closeDlg(); });
 
 
-/* backup: export / import a JSON file */
+/* ---------- backup & sync ---------- */
 function normalize(b){
   return {
     loans:(Array.isArray(b?.loans)?b.loans:[]).map(x=>({...x, paid:{...(x.paid||{})}})),
     subs:Array.isArray(b?.subs)?b.subs:[],
     debts:(Array.isArray(b?.debts)?b.debts:[]).map(x=>({...x})),
+    updatedAt:Number(b?.updatedAt)||0,
   };
 }
-function openBackup(){
-  lastFocus = document.activeElement;
-  $("#dlg-root").innerHTML = `<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
-    <h3 id="dlg-title">备份与恢复</h3>
-    <p class="sub" style="margin:0 0 16px;text-align:center;line-height:1.6">数据只保存在这台设备的浏览器里。换手机、清理浏览器数据前，请先导出备份。</p>
-    <div style="display:grid;gap:10px">
-      <button type="button" class="btn primary" id="bk-export">导出备份文件</button>
-      <label class="btn" for="bk-file" style="text-align:center;cursor:pointer">从备份文件恢复</label>
+const hasData = d => !!(d && ((d.loans||[]).length || (d.debts||[]).length));
+const SYNC_KEY = "pay-sync-v1", GIST_FILE = "pay-data.json", GIST_DESC = "Pay 还款数据同步（请勿删除）";
+let sync = {}; try { sync = JSON.parse(localStorage.getItem(SYNC_KEY)||"{}") || {}; } catch(e){}
+let syncState = sync.token ? "idle" : "off", syncErr = "", syncing = false, syncAgain = false, syncTimer = 0, pendingChoice = null;
+function saveSync(){ try { localStorage.setItem(SYNC_KEY, JSON.stringify(sync)); } catch(e){} }
+function ago(t){ if(!t) return "从未"; const s = Math.round((Date.now()-t)/1000);
+  if(s<60) return "刚刚"; if(s<3600) return Math.floor(s/60)+" 分钟前"; if(s<86400) return Math.floor(s/3600)+" 小时前";
+  const d = new Date(t); return `${d.getMonth()+1}月${d.getDate()}日 ${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+function setSync(st){
+  syncState = st;
+  $("#sync-btn").dataset.state = st === "idle" ? "ok" : st;
+  if(st==="ok") setStatus("已同步 · "+ago(sync.lastSync));
+  else if(st==="err") setStatus("同步失败："+syncErr, true);
+  else if(st==="syncing") setStatus("正在同步…");
+  if($("#sync-body")) renderSyncBody();
+}
+async function gh(path, opt={}){
+  let r;
+  try { r = await fetch("https://api.github.com"+path, {...opt, cache:"no-store", headers:{Accept:"application/vnd.github+json", Authorization:"Bearer "+sync.token, ...(opt.body?{"Content-Type":"application/json"}:{})}}); }
+  catch(e){ const er = new Error("网络不可用"); er.status = 0; throw er; }
+  if(!r.ok){ const er = new Error(r.status===401?"令牌无效或已过期":r.status===403?"令牌没有 gist 权限或请求过多":r.status===404?"找不到云端数据":"GitHub 返回错误 "+r.status); er.status = r.status; throw er; }
+  return r.status===204 ? null : r.json();
+}
+async function findGist(){
+  for(let page=1; page<=5; page++){
+    const list = await gh(`/gists?per_page=100&page=${page}`);
+    const g = list.find(x=>x.description===GIST_DESC && x.files && x.files[GIST_FILE]);
+    if(g) return g.id; if(list.length<100) break;
+  }
+  return null;
+}
+async function readRemote(){
+  const g = await gh(`/gists/${sync.gistId}`); const f = g.files && g.files[GIST_FILE]; if(!f) return null;
+  let txt = f.content; if(f.truncated) txt = await (await fetch(f.raw_url, {cache:"no-store"})).text();
+  return normalize(JSON.parse(txt));
+}
+async function pushRemote(){
+  const files = {[GIST_FILE]:{content:JSON.stringify({app:"Pay", ...data}, null, 1)}};
+  if(sync.gistId) await gh(`/gists/${sync.gistId}`, {method:"PATCH", body:JSON.stringify({description:GIST_DESC, files})});
+  else { const g = await gh(`/gists`, {method:"POST", body:JSON.stringify({description:GIST_DESC, public:false, files})}); sync.gistId = g.id; }
+}
+async function syncNow(){
+  if(!sync.token || pendingChoice) return;
+  if(syncing){ syncAgain = true; return; }
+  syncing = true; setSync("syncing");
+  try {
+    if(!sync.gistId) sync.gistId = await findGist();
+    let remote = null;
+    if(sync.gistId){ try { remote = await readRemote(); } catch(e){ if(e.status===404){ sync.gistId = null; } else throw e; } }
+    const lu = data.updatedAt||0, ru = remote?.updatedAt||0;
+    if(remote && ru > lu){ data = remote; saveLocal(); render(); }
+    else if(!remote || lu > ru){ await pushRemote(); }
+    sync.lastSync = Date.now(); saveSync(); syncErr = ""; setSync("ok");
+  } catch(e){ syncErr = e.message || "未知错误"; setSync("err"); }
+  syncing = false;
+  if(syncAgain){ syncAgain = false; syncNow(); }
+}
+function scheduleSync(){ if(!sync.token) return; clearTimeout(syncTimer); syncTimer = setTimeout(syncNow, 1200); }
+async function connect(token){
+  sync = {token}; setSync("syncing");
+  try {
+    const id = await findGist(); sync.gistId = id;
+    const remote = id ? await readRemote() : null;
+    if(remote && hasData(remote) && hasData(data) && JSON.stringify([remote.loans,remote.debts]) !== JSON.stringify([data.loans,data.debts])){
+      saveSync(); pendingChoice = remote; syncing = false; setSync("idle"); renderSyncBody(); return;
+    }
+    if(remote && hasData(remote) && !hasData(data)){ data = remote; saveLocal(); render(); }
+    else { data.updatedAt = Date.now(); saveLocal(); }
+    saveSync(); syncState = "idle"; await syncNow();
+  } catch(e){ sync = {}; saveSync(); syncErr = e.message; setSync("off"); const m = $("#sync-msg"); if(m){ m.hidden = false; m.textContent = "连接失败："+e.message; } }
+}
+function resolveChoice(useCloud){
+  if(useCloud){ data = pendingChoice; }
+  data.updatedAt = Date.now(); pendingChoice = null; saveLocal(); render(); syncNow();
+}
+function disconnect(){ sync = {}; saveSync(); pendingChoice = null; syncErr = ""; setSync("off"); setStatus("已断开云同步，数据仍保存在本机"); }
+
+const I_CLOUD = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.2a4.3 4.3 0 0 0 .6-8.56A6 6 0 0 0 6.3 9.6 4.5 4.5 0 0 0 7 18.5Z"/><path d="M9.6 13.6 12 11.2l2.4 2.4M12 11.4v4.6"/></svg>`;
+function renderSyncBody(){
+  const el = $("#sync-body"); if(!el) return;
+  const pill = sync.token
+    ? (syncState==="syncing"?`<span class="pill syncing"><i></i>同步中</span>`:syncState==="err"?`<span class="pill err"><i></i>同步失败</span>`:`<span class="pill ok"><i></i>已开启</span>`)
+    : `<span class="pill"><i></i>未开启</span>`;
+  let cloud;
+  if(pendingChoice){
+    cloud = `<div class="choice"><p>云端和这台设备上都有数据，而且内容不一样。要保留哪一份？另一份会被覆盖。</p>
+      <p style="color:var(--muted)">云端：${pendingChoice.loans.length} 笔贷款、${pendingChoice.debts.length} 笔借款 · 本机：${data.loans.length} 笔贷款、${data.debts.length} 笔借款</p>
+      <div class="row2"><button type="button" class="btn teal sm" id="sy-cloud">用云端的</button><button type="button" class="btn sm" id="sy-local">用本机的</button></div></div>`;
+  } else if(sync.token){
+    cloud = `<p>${syncState==="err"?`<span style="color:var(--owe)">${esc(syncErr)}</span><br>`:""}上次同步：${ago(sync.lastSync)}。每次修改后会自动同步，打开页面时也会拉取最新数据。</p>
+      <div class="row2"><button type="button" class="btn teal sm" id="sy-now" ${syncState==="syncing"?"disabled":""}>${syncState==="syncing"?"同步中…":"立即同步"}</button><button type="button" class="btn sm" id="sy-off">断开</button></div>`;
+  } else {
+    cloud = `<p>用你自己的 GitHub 账号保存一份私密数据，手机、电脑之间自动同步。数据不经过任何第三方。</p>
+      <ol><li><a href="https://github.com/settings/tokens/new?scopes=gist&description=Pay%20sync" target="_blank" rel="noopener">点这里创建令牌</a>，只勾选 <b>gist</b>，有效期可选 No expiration</li><li>复制生成的令牌，粘贴到下面</li><li>其他设备上粘贴同一个令牌即可</li></ol>
+      <input id="sy-token" type="password" autocomplete="off" spellcheck="false" placeholder="粘贴令牌：ghp_ 或 github_pat_ 开头">
+      <button type="button" class="btn teal" id="sy-connect">连接并同步</button>
+      <div class="err" id="sync-msg" hidden></div>`;
+  }
+  el.innerHTML = `<div class="sbox"><div class="hd">云同步 <small>GitHub</small><span style="margin-left:auto">${pill}</span></div>${cloud}</div>
+    <div class="sbox"><div class="hd">本地备份 <small>JSON 文件</small></div>
+      <p>导出一份文件保存到手机或网盘，需要时再恢复。</p>
+      <div class="row2"><button type="button" class="btn sm" id="bk-export">导出备份</button><label class="btn sm" for="bk-file" style="text-align:center;cursor:pointer">从文件恢复</label></div>
       <input type="file" id="bk-file" accept="application/json,.json" hidden>
-    </div>
-    <div class="err" id="bk-msg" hidden></div>
-    <div class="acts"><span class="grow"></span><button type="button" class="btn" id="dlg-cancel">关闭</button></div>
-  </div></div>`;
-  $("#scrim").addEventListener("click", e=>{ if(e.target.id==="scrim") closeDlg(); });
-  $("#dlg-cancel").onclick = closeDlg;
-  $("#bk-export").onclick = () => {
-    const blob = new Blob([JSON.stringify({app:"还款", exportedAt:new Date().toISOString(), ...data}, null, 2)], {type:"application/json"});
-    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `还款备份-${Y}${pad(M+1)}${pad(D)}.json`;
+      <div class="err" id="bk-msg" hidden></div></div>`;
+  const on = (id, fn) => { const b = $("#"+id); if(b) b.onclick = fn; };
+  on("sy-now", syncNow); on("sy-off", disconnect);
+  on("sy-cloud", ()=>resolveChoice(true)); on("sy-local", ()=>resolveChoice(false));
+  on("sy-connect", ()=>{ const t = $("#sy-token").value.trim(); const m = $("#sync-msg");
+    if(!/^(ghp_|github_pat_|gho_)/.test(t)){ m.hidden = false; m.textContent = "这看起来不像 GitHub 令牌，请重新复制。"; return; }
+    $("#sy-connect").disabled = true; $("#sy-connect").textContent = "正在连接…"; connect(t); });
+  on("bk-export", ()=>{
+    const blob = new Blob([JSON.stringify({app:"Pay", exportedAt:new Date().toISOString(), ...data}, null, 2)], {type:"application/json"});
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Pay备份-${Y}${pad(M+1)}${pad(D)}.json`;
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
-  };
+  });
   $("#bk-file").onchange = async e => {
     const f = e.target.files?.[0]; if(!f) return; const msg = $("#bk-msg"); msg.hidden = false;
     try {
@@ -560,18 +696,34 @@ function openBackup(){
       if(!b || (!Array.isArray(b.loans) && !Array.isArray(b.debts))) throw 0;
       const nb = normalize(b);
       msg.style.color = "var(--ink)";
-      msg.innerHTML = `文件里有 ${nb.loans.length} 笔贷款、${nb.debts.length} 笔借款，恢复后会替换当前数据。<div style="margin-top:10px"><button type="button" class="btn primary" id="bk-go">确认恢复</button></div>`;
+      msg.innerHTML = `文件里有 ${nb.loans.length} 笔贷款、${nb.debts.length} 笔借款，恢复后会替换当前数据。<div style="margin-top:10px"><button type="button" class="btn teal sm" id="bk-go">确认恢复</button></div>`;
       $("#bk-go").onclick = () => { data = nb; closeDlg(); commit(); setStatus("已从备份恢复"); };
-    } catch(_) { msg.style.color = ""; msg.textContent = "这个文件不是还款的备份文件，请重新选择。"; }
+    } catch(_) { msg.style.color = ""; msg.textContent = "这个文件不是 Pay 的备份文件，请重新选择。"; }
+    e.target.value = "";
   };
 }
-$("#backup-btn").addEventListener("click", openBackup);
+function openSync(){
+  lastFocus = document.activeElement;
+  $("#dlg-root").innerHTML = `<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+    <div class="sync-hero"><span class="orb">${I_CLOUD}</span><h3 id="dlg-title">备份与同步</h3></div>
+    <div id="sync-body"></div>
+    <div class="acts"><span class="grow"></span><button type="button" class="btn" id="dlg-cancel">完成</button></div>
+  </div></div>`;
+  $("#scrim").addEventListener("click", e=>{ if(e.target.id==="scrim") closeDlg(); });
+  $("#dlg-cancel").onclick = closeDlg;
+  renderSyncBody();
+}
+$("#sync-btn").addEventListener("click", openSync);
 
 /* load from this device */
 try { const raw = localStorage.getItem(KEY) || localStorage.getItem("huankuan-ledger-v1"); if(raw) data = normalize(JSON.parse(raw)); } catch(e){}
 loaded = true; canWrite = true;
 render();
 setStatus(data.loans.length || data.debts.length ? "数据保存在本机" : "开始记录吧");
+setSync(syncState);
+if(sync.token){ syncNow(); }
+document.addEventListener("visibilitychange", ()=>{ if(document.visibilityState==="visible" && sync.token && Date.now()-(sync.lastSync||0) > 15000) syncNow(); });
+addEventListener("online", ()=>{ if(sync.token) syncNow(); });
 
 if("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
 })();

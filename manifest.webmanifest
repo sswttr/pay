@@ -1,6 +1,6 @@
 {
-  "name": "还款",
-  "short_name": "还款",
+  "name": "Pay",
+  "short_name": "Pay",
   "description": "记录每月贷款还款和个人借款的小账本",
   "lang": "zh-CN",
   "start_url": "./",
