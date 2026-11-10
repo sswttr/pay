@@ -290,6 +290,10 @@ tr.done .tg,tr.done .who{filter:grayscale(1);opacity:.7}
   .fields{grid-template-columns:1fr}
   .add .lb{display:none}
 }
+/* home-screen app: keep the header clear of the system's blurred status-bar zone */
+@media (display-mode: standalone){
+  .top{padding-top:34px;padding-bottom:16px}
+}
 @media (prefers-reduced-motion:no-preference){
   .scrim .sheet{animation:up .22s ease-out}
   @keyframes up{from{transform:translateY(18px);opacity:.6}to{transform:none;opacity:1}}
